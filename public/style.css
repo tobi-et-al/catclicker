@@ -12,7 +12,10 @@ body {
   font-family: helvetica, arial, sans-serif;
   margin: 25px;
 }
-
+#thumb {
+    width: 150px;
+    float:left;
+}
 h1 {
   font-weight: bold;
   color: pink;
