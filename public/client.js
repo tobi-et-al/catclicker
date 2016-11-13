@@ -12,10 +12,16 @@ $(function(){
         }
 
     },
-    updateAllCats: function(id){
+    updateAllCats: function(){
       var cats = JSON.parse(localStorage.cats);
-      cats[id].count += 1;
+      cats[octopus.getcurrentCat()].count = parseInt(cats[octopus.getcurrentCat()].count) + 1;
       localStorage.cats = JSON.stringify(cats);
+
+    },
+    updateSingleCats: function(data){
+        var cats = JSON.parse(localStorage.cats);
+        cats[octopus.getcurrentCat()] = data;
+        localStorage.cats = JSON.stringify(cats);
 
     },
     
@@ -26,12 +32,28 @@ $(function(){
   };
  var octopus = {
    init: function(){
+     octopus.setcurrentCat(0);
      model.init();
      view.init();
      $('.note').on('click', function(e){
        octopus.updateCatRecords($(this).data('id'));
-       octopus.getCat();
+       octopus.setcurrentCat($(this).data('id'));
        view.renderMain($(this).data('id'));
+       admin.renderForm(octopus.getCat($(this).data('id')));
+     });
+     $('#admin').on('click', function(e){ 
+        $('#admin-panel').show();
+        admin.renderForm(model.getAllCats()[octopus.getcurrentCat()]);
+     });
+     $('#cancel').on('click', function(e){ 
+        $('#admin-panel').hide();
+     });
+     
+     $('#save').on('click', function(e){  
+         // Get all the forms elements and their values in one step
+        octopus.updateAllCatRecords({name: $('#admin-panel #name').val(),url: $('#admin-panel #url').val(),count:$('#admin-panel #count').val() });
+        $('#admin-panel').hide();
+        view.renderMain();
      });
    },        
    getCats: function() {
@@ -40,8 +62,17 @@ $(function(){
    getCat: function(id) {
       return model.getAllCats()[id];
    },
+   setcurrentCat: function(id){
+      this.currentCat = id;
+   },
+   getcurrentCat: function(){
+      return this.currentCat;
+   },
    updateCatRecords: function(id){
       model.updateAllCats(id);
+   },
+   updateAllCatRecords: function(data){
+      model.updateSingleCats(data);
    }
    
  };
@@ -49,7 +80,7 @@ $(function(){
  var view = {
    init: function(){
      this.renderlist();
-     this.renderMain(0);
+     this.renderMain(octopus.setcurrentCat(0));
    },
    renderlist: function(){
      var htmlStr = '';
@@ -59,13 +90,22 @@ $(function(){
      $('#thumb').html(htmlStr);
 
    },
-   renderMain: function(id){
+   renderMain: function(){
      var htmlStr = '';
-     cat = octopus.getCat(id);
+     cat = octopus.getCat(octopus.getcurrentCat());
      htmlStr += "<h1><span id='cattitle'>"+ cat.name + '😻</span>'+
         '<span id="counter">'+ cat.count +'</span></h1>' +
-        '<div>' + '</div><img width="200" src="' + cat.url +'"/>' +'</div>';
+        '<div>' + '</div><img width="400" src="' + cat.url +'"/>' +'</div>';
      $('#area').html(htmlStr);     
+   }
+   
+ };
+ var admin = {
+   renderForm: function(currentdata){
+
+     $('#admin-panel #name').val(currentdata.name);
+     $('#admin-panel #url').val(currentdata.url);
+     $('#admin-panel #count').val(currentdata.count);
    }
    
  };
