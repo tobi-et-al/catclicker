@@ -54,7 +54,7 @@ $(function(){
    renderlist: function(){
      var htmlStr = '';
      octopus.getCats().forEach(function(cat, i){
-         htmlStr += '<div><a href="#" class="note" data-id="'+ i +'"><img width="200" src="' + cat.url +'"/>' +'</a></div>';
+         htmlStr += '<div><a href="#" class="note" data-id="'+ i +'">' + cat.name +'</a></div>';
       });
      $('#thumb').html(htmlStr);
 
@@ -64,7 +64,7 @@ $(function(){
      cat = octopus.getCat(id);
      htmlStr += "<h1><span id='cattitle'>"+ cat.name + '😻</span>'+
         '<span id="counter">'+ cat.count +'</span></h1>' +
-        '<div>' + cat.name + ' '  + cat.count + '</div><img width="200" src="' + cat.url +'"/>' +'</div>';
+        '<div>' + '</div><img width="200" src="' + cat.url +'"/>' +'</div>';
      $('#area').html(htmlStr);     
    }
    
