@@ -12,9 +12,3 @@ On the back-end,
 On the front-end,
 - edit `client.js`, `style.css` and `index.html`
 - drag in `assets`, like images or music, to add them to your project
-
-
-Made by Fog Creek
------------------
-
-\ ゜o゜)ノ
